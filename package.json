@@ -17,7 +17,7 @@
         "hardhat": "^2.20.0",
         "ipfs-http-client": "^57.0.3",
         "next": "15.1.0",
-        "next-themes": "^0.1.1",
+        "next-themes": "^0.4.4",
         "react": "^19.0.0",
         "react-dom": "^19.0.0",
         "react-dropzone": "^12.0.4",
