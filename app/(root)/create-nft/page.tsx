@@ -6,9 +6,15 @@ import Image from "next/image";
 import { useTheme } from "next-themes";
 import { Button } from "@/components/Button";
 import images from "@/assets/assets";
+import { Input } from "@/components/Inputs";
 
 const CreateNfts = () => {
     const [fileUrl, setfileUrl] = useState(null);
+    const [formInputs, setformInputs] = useState({
+        price: "",
+        name: "",
+        description: "",
+    });
     const { theme } = useTheme();
 
     const onDrop = useCallback(() => {
@@ -42,7 +48,7 @@ const CreateNfts = () => {
                 </h1>
                 <div className="mt-16 ">
                     <p className="font-poppins dark:text-white text-nft-black-1 font-semibold text-xl">
-                        Upload filex
+                        Upload file
                     </p>
                     <div className="mt-4">
                         <div {...getRootProps()} className={fileStyle}>
@@ -81,6 +87,50 @@ const CreateNfts = () => {
                             </aside>
                         )}
                     </div>
+                </div>
+                <Input
+                    inputType="input"
+                    title="Name"
+                    placeholder="NFT Name"
+                    handleClick={(
+                        e: React.ChangeEvent<
+                            HTMLInputElement | HTMLTextAreaElement
+                        >
+                    ) =>
+                        setformInputs((prevVals) => ({
+                            ...prevVals,
+                            name: e.target.value,
+                        }))
+                    }
+                />
+                <Input
+                    inputType="textarea"
+                    title="Description"
+                    placeholder="NFT Description"
+                    handleClick={(e) =>
+                        setformInputs((prevVal) => ({
+                            ...prevVal,
+                            description: e.target.value,
+                        }))
+                    }
+                />
+                <Input
+                    inputType="number"
+                    title="Price"
+                    placeholder="NFT Price"
+                    handleClick={(e) =>
+                        setformInputs((prevVal) => ({
+                            ...prevVal,
+                            price: e.target.value,
+                        }))
+                    }
+                />
+                <div className="mt-7 w-full flex justify-end">
+                    <Button
+                        btnName="Create NFT"
+                        classStyles="rounded-xl"
+                        handleClick={() => {}}
+                    />
                 </div>
             </div>
         </div>
