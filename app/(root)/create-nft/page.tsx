@@ -7,18 +7,32 @@ import { useTheme } from "next-themes";
 import { Button } from "@/components/Button";
 import images from "@/assets/assets";
 import { Input } from "@/components/Inputs";
+import { NFTContext } from "@/context/NFTContext";
 
 const CreateNfts = () => {
-    const [fileUrl, setfileUrl] = useState(null);
+    const [fileUrl, setfileUrl] = useState<string>("");
+    const router = useRouter();
     const [formInputs, setformInputs] = useState({
         price: "",
         name: "",
         description: "",
     });
     const { theme } = useTheme();
+    const { uploadToIPFS, createNFT } = useContext(NFTContext);
 
-    const onDrop = useCallback(() => {
-        //upload to the ipfs
+    const onDrop = useCallback(async (acceptedFiles: File[]) => {
+        if (acceptedFiles && acceptedFiles.length > 0) {
+            const file = acceptedFiles[0];
+            try {
+                const url = await uploadToIPFS(file);
+                if (url) {
+                    console.log("File uploaded successfully:", url);
+                    setfileUrl(url);
+                }
+            } catch (error) {
+                console.error("Error uploading file to IPFS:", error);
+            }
+        }
     }, []);
     const {
         getRootProps,
@@ -129,7 +143,9 @@ const CreateNfts = () => {
                     <Button
                         btnName="Create NFT"
                         classStyles="rounded-xl"
-                        handleClick={() => {}}
+                        handleClick={() =>
+                            createNFT(formInputs, fileUrl, router)
+                        }
                     />
                 </div>
             </div>

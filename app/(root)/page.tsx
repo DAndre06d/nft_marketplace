@@ -4,7 +4,6 @@ import Image from "next/image";
 import { Banner } from "@/components/Banner";
 import { CreatorCard, NftCard } from "@/components/Cards";
 import images from "@/assets/assets";
-import { makeId } from "@/utils/makeId";
 import { useTheme } from "next-themes";
 
 export default function Home() {

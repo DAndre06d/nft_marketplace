@@ -1,15 +1,17 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Button } from "../Button";
 import { useRouter } from "next/navigation";
+import { NFTContext } from "@/context/NFTContext";
 interface NavbarButtonGroupProps {
     setActive?: React.Dispatch<React.SetStateAction<string>>;
     router?: ReturnType<typeof useRouter>;
 }
 
 const NavbarButtonGroup = ({ setActive, router }: NavbarButtonGroupProps) => {
+    const { connectWallet, currentAccount } = useContext(NFTContext);
     const hasConnected = true;
 
-    return hasConnected ? (
+    return currentAccount ? (
         <Button
             btnName="Create"
             classStyles={`mx-2 rounded-xl`}
@@ -26,7 +28,7 @@ const NavbarButtonGroup = ({ setActive, router }: NavbarButtonGroupProps) => {
         <Button
             btnName="Connect"
             classStyles={"mx-2 rounded-xl"}
-            handleClick={() => {}}
+            handleClick={connectWallet}
         />
     );
 };

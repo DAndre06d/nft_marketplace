@@ -2,6 +2,9 @@ import React from "react";
 import Image from "next/image";
 import Link from "next/link";
 import images from "@/assets/assets";
+
+import { useContext } from "react";
+import { NFTContext } from "@/context/NFTContext";
 interface NftCardProps {
     nft: {
         i: number;
@@ -15,6 +18,7 @@ interface NftCardProps {
 }
 
 const NftCard = ({ nft }: NftCardProps) => {
+    const { nftCurrency } = useContext(NFTContext);
     return (
         <Link
             href={{
@@ -40,7 +44,8 @@ const NftCard = ({ nft }: NftCardProps) => {
                     </p>
                     <div className="flexBetween mt-1 minlg:mt-3 flex-row xs:flex-xol xs:items-start xs:mt-3">
                         <p className="font-poppins dark:text-white text-nft-black-1 font-semibold text-xs minlg:text-lg">
-                            {nft.price} <span className="normal">ETH</span>
+                            {nft.price}{" "}
+                            <span className="normal">{nftCurrency}</span>
                         </p>
                     </div>
                     <p className="font-poppins dark:text-white text-nft-black-1 font-semibold text-xs minlg:text-lg">

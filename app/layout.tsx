@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "next-themes";
 import Script from "next/script";
+import { NFTProvider } from "@/context/NFTContext";
 
 const geistSans = Geist({
     variable: "--font-geist-sans",
@@ -29,13 +30,15 @@ export default function RootLayout({
             <body
                 className={`${geistSans.variable} ${geistMono.variable} antialiased`}
             >
-                <ThemeProvider attribute="class">
-                    {children}
-                    <Script
-                        src="https://kit.fontawesome.com/640e730a61.js"
-                        crossOrigin="anonymous"
-                    ></Script>
-                </ThemeProvider>
+                <NFTProvider>
+                    <ThemeProvider attribute="class">
+                        {children}
+                        <Script
+                            src="https://kit.fontawesome.com/640e730a61.js"
+                            crossOrigin="anonymous"
+                        ></Script>
+                    </ThemeProvider>
+                </NFTProvider>
             </body>
         </html>
     );
