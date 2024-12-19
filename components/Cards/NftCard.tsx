@@ -5,15 +5,16 @@ import images from "@/assets/assets";
 
 import { useContext } from "react";
 import { NFTContext } from "@/context/NFTContext";
+import { shortenAddress } from "@/utils/string";
 interface NftCardProps {
     nft: {
-        i: number;
+        tokenId: number;
         name: string;
         seller: string;
         owner: string;
         description: string;
         image: string;
-        price: number;
+        price: string;
     };
 }
 
@@ -31,7 +32,7 @@ const NftCard = ({ nft }: NftCardProps) => {
                     <Image
                         src={
                             nft.image ||
-                            images[`nft${nft.i}` as keyof typeof images]
+                            images[`nft${nft.tokenId}` as keyof typeof images]
                         }
                         alt="nft image"
                         layout="fill"
@@ -49,7 +50,9 @@ const NftCard = ({ nft }: NftCardProps) => {
                         </p>
                     </div>
                     <p className="font-poppins dark:text-white text-nft-black-1 font-semibold text-xs minlg:text-lg">
-                        {nft.seller}
+                        {nft.seller.length > 10
+                            ? shortenAddress(nft.seller)
+                            : nft.seller}
                     </p>
                 </div>
             </div>

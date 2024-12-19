@@ -1,13 +1,17 @@
 "use client";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useContext } from "react";
 import Image from "next/image";
 import { Banner } from "@/components/Banner";
 import { CreatorCard, NftCard } from "@/components/Cards";
 import images from "@/assets/assets";
 import { useTheme } from "next-themes";
+import { NFTContext } from "@/context/NFTContext";
+import { NFTItem } from "@/context/NFTContext";
 
 export default function Home() {
     const [hideButtons, sethideButtons] = useState(false);
+    const [nfts, setnfts] = useState<NFTItem[]>([]);
+    const { fetchNFTs } = useContext(NFTContext);
     const parentRef = useRef<HTMLDivElement>(null);
     const scrollRef = useRef<HTMLDivElement>(null);
     const { theme } = useTheme();
@@ -42,6 +46,15 @@ export default function Home() {
         return () => {
             window.removeEventListener("resize", handleResize);
         };
+    }, []);
+
+    useEffect(() => {
+        const fetchData = async () => {
+            const items = await fetchNFTs();
+            console.log(items);
+            setnfts(items);
+        };
+        fetchData();
     }, []);
     return (
         <div className="flex justify-center sm:px-4 p-12">
@@ -123,21 +136,8 @@ export default function Home() {
                         <div>Searchbar</div>
                     </div>
                     <div className="mt-3 w-full flex flex-wrap justify-start md:justify-center">
-                        {[1, 2, 4, 5, 6, 7, 8, 9, 10].map((i) => (
-                            <NftCard
-                                key={`nft-${i}`}
-                                nft={{
-                                    i: i,
-                                    name: `Nifty NFT ${i}`,
-                                    seller: `0x${112312}...${123123}`,
-                                    owner: `0x${112312}...${123123}`,
-                                    description: "Cool NFT on sale.",
-                                    image: "",
-                                    price: parseFloat(
-                                        (10 - i * 0.534).toFixed(2)
-                                    ),
-                                }}
-                            />
+                        {nfts.map((nft) => (
+                            <NftCard key={nft.tokenId} nft={nft} />
                         ))}
                     </div>
                 </div>

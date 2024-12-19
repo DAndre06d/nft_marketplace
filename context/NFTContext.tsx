@@ -1,20 +1,24 @@
 "use client";
 import React, { useEffect, useState } from "react";
-
-import Web3Modal from "web3modal";
-import { ethers } from "ethers";
 import axios from "axios";
 
 import { marketAddress, marketAddressAbi } from "./constants";
-import { createHelia } from "helia";
-import { unixfs } from "@helia/unixfs";
-import { heliaWithRemotePins } from "@helia/remote-pinning";
-import { NextRouter } from "next/router";
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
+import { fetchNFTs } from "@/utils/nft";
 
 // Directly import create from Web3Storage client
 import { create } from "@web3-storage/w3up-client";
 import { createSale } from "@/utils/nft";
+export interface NFTItem {
+    price: string; // Assuming `parseUnits` returns a string
+    tokenId: number;
+    seller: string;
+    owner: string;
+    image: string;
+    name: string;
+    description: string;
+    tokenURI: string;
+}
 interface NFTContextType {
     nftCurrency: string;
     connectWallet: () => void;
@@ -25,14 +29,16 @@ interface NFTContextType {
         fileUrl: string,
         router: AppRouterInstance
     ) => Promise<void>;
+    fetchNFTs: () => Promise<NFTItem[]>; // Updated to return Promise<NFTItem[]>
 }
 
 export const NFTContext = React.createContext<NFTContextType>({
     nftCurrency: "",
     connectWallet: () => {},
     currentAccount: "",
-    uploadToIPFS: (file: File) => Promise.resolve<string | null>(""),
+    uploadToIPFS: async (file: File) => null,
     createNFT: async () => {},
+    fetchNFTs: async () => [], // Default to an empty array for NFTs
 });
 
 interface NFTProviderProps {
@@ -81,7 +87,6 @@ export const NFTProvider = ({ children }: NFTProviderProps) => {
 
     useEffect(() => {
         checkIfWallerConnected();
-        createSale("test", "0.025");
     }, []);
 
     const nftCurrency = "ETH";
@@ -143,6 +148,7 @@ export const NFTProvider = ({ children }: NFTProviderProps) => {
                 currentAccount,
                 uploadToIPFS,
                 createNFT,
+                fetchNFTs,
             }}
         >
             {children}
