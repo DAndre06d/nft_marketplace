@@ -12,6 +12,7 @@ const MenuItems = ({
     setActive,
     closeNav,
 }: MenuItemsProps) => {
+    console.log(active);
     const generateLink = (i: number): string => {
         switch (i) {
             case 0:

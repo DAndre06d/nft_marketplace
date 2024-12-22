@@ -4,11 +4,10 @@ import axios from "axios";
 
 import { marketAddress, marketAddressAbi } from "./constants";
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
-import { fetchNFTs } from "@/utils/nft";
 
 // Directly import create from Web3Storage client
 import { create } from "@web3-storage/w3up-client";
-import { createSale } from "@/utils/nft";
+import { createSale, fetchNFTs, fetchMyNFTsorListedNFTs } from "@/utils/nft";
 export interface NFTItem {
     price: string; // Assuming `parseUnits` returns a string
     tokenId: number;
@@ -30,6 +29,7 @@ interface NFTContextType {
         router: AppRouterInstance
     ) => Promise<void>;
     fetchNFTs: () => Promise<NFTItem[]>; // Updated to return Promise<NFTItem[]>
+    fetchMyNFTsorListedNFTs: (type: string) => Promise<NFTItem[]>;
 }
 
 export const NFTContext = React.createContext<NFTContextType>({
@@ -39,6 +39,7 @@ export const NFTContext = React.createContext<NFTContextType>({
     uploadToIPFS: async (file: File) => null,
     createNFT: async () => {},
     fetchNFTs: async () => [], // Default to an empty array for NFTs
+    fetchMyNFTsorListedNFTs: async (type: string) => [],
 });
 
 interface NFTProviderProps {
@@ -149,6 +150,7 @@ export const NFTProvider = ({ children }: NFTProviderProps) => {
                 uploadToIPFS,
                 createNFT,
                 fetchNFTs,
+                fetchMyNFTsorListedNFTs,
             }}
         >
             {children}

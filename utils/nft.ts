@@ -73,3 +73,52 @@ export const fetchNFTs = async () => {
     );
     return items;
 };
+
+export const fetchMyNFTsorListedNFTs = async (type: string) => {
+    const web3Modal = new Web3Modal();
+    const connection = await web3Modal.connect();
+
+    const provider = new BrowserProvider(connection);
+
+    const signer = await provider.getSigner();
+
+    const contract = await fetchContract(signer);
+
+    const data =
+        type === "fetchItemsListed"
+            ? await contract.fetchItemsListed()
+            : await contract.fetchMyNFTs();
+
+    const items = await Promise.all(
+        data.map(
+            async ({
+                tokenId,
+                seller,
+                owner,
+                price: unformatterPrice,
+            }: {
+                tokenId: string;
+                seller: string;
+                owner: string;
+                price: string;
+            }) => {
+                const tokenURI = await contract.tokenURI(tokenId);
+                const {
+                    data: { image, name, description },
+                } = await axios.get(tokenURI);
+                const price = formatUnits(unformatterPrice.toString(), "ether");
+                return {
+                    price,
+                    tokenId: parseInt(tokenId),
+                    seller,
+                    owner,
+                    image,
+                    name,
+                    description,
+                    tokenURI,
+                };
+            }
+        )
+    );
+    return items;
+};
