@@ -15,9 +15,9 @@ const Footer = () => {
                         <Image
                             src={images.logo02}
                             alt="Logo"
-                            objectFit="contain"
                             width={32}
                             height={32}
+                            className="object-contain"
                         />
                         <p className="dark:text-white text-nft-black-1font-semibold text-lg ml-1">
                             CryptoKet
@@ -72,7 +72,7 @@ const Footer = () => {
                             <div key={i} className="mx-2 cursor-pointer">
                                 <Image
                                     src={image}
-                                    alt={image}
+                                    alt={"Social media logo"}
                                     className={`object-contain ${
                                         theme === "light" && "filter invert"
                                     }`}

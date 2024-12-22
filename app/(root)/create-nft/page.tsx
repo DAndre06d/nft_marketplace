@@ -77,12 +77,9 @@ const CreateNfts = () => {
                                         alt="file upload image"
                                         width={100}
                                         height={100}
-                                        objectFit="contain"
-                                        className={
-                                            theme === "light"
-                                                ? "filter invert"
-                                                : ""
-                                        }
+                                        className={`object-contain ${
+                                            theme === "light" ? "invert" : ""
+                                        }`}
                                     />
                                 </div>
                                 <p className="font-poppins dark:text-white text-nft-black-1 font-semibold text-sm">

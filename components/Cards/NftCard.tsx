@@ -35,8 +35,8 @@ const NftCard = ({ nft }: NftCardProps) => {
                             images[`nft${nft.tokenId}` as keyof typeof images]
                         }
                         alt="nft image"
-                        layout="fill"
-                        objectFit="cover"
+                        fill // Replaces `layout="fill"`
+                        className="object-cover"
                     />
                 </div>
                 <div className="mt-3 flex flex-col ">

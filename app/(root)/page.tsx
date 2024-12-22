@@ -97,8 +97,7 @@ export default function Home() {
                                     >
                                         <Image
                                             src={images.left}
-                                            layout="fill"
-                                            objectFit="contain"
+                                            fill
                                             alt="left_arrow"
                                             className={
                                                 theme === "light"
@@ -113,14 +112,13 @@ export default function Home() {
                                     >
                                         <Image
                                             src={images.right}
-                                            layout="fill"
-                                            objectFit="contain"
                                             alt="left_arrow"
-                                            className={
+                                            fill // Replaces `layout="fill"`
+                                            className={`object-contain ${
                                                 theme === "light"
-                                                    ? `filter invert`
+                                                    ? "invert"
                                                     : ""
-                                            }
+                                            }`}
                                         />
                                     </div>
                                 </>

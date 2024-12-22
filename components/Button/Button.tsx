@@ -2,7 +2,7 @@ import React from "react";
 interface ButtonProp {
     classStyles?: string;
     btnName: string;
-    handleClick: () => void;
+    handleClick?: () => void;
 }
 
 const Button = ({ classStyles, btnName, handleClick }: ButtonProp) => {

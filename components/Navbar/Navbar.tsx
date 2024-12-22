@@ -21,7 +21,7 @@ const Navbar = () => {
                     <Image
                         src={images.logo02}
                         alt="Logo"
-                        objectFit="contain"
+                        className="object-contain"
                         width={32}
                         height={32}
                     />
@@ -69,17 +69,20 @@ const Navbar = () => {
                         width={20}
                         height={20}
                         onClick={() => setisOpen(false)}
-                        className={theme === "light" ? "filter invert" : ""}
+                        className={`object-contain cursor-pointer ${
+                            theme === "light" ? "invert" : ""
+                        }`}
                     />
                 ) : (
                     <Image
                         src={images.menu}
                         alt="Menu"
-                        objectFit="contain"
                         width={25}
                         height={25}
                         onClick={() => setisOpen(true)}
-                        className={theme === "light" ? "filter invert" : ""}
+                        className={`object-contain cursor-pointer ${
+                            theme === "light" ? "invert" : ""
+                        }`}
                     />
                 )}
                 {isOpen && (
