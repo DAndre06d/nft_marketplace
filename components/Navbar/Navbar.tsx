@@ -8,26 +8,65 @@ import MenuItems from "@/components/Navbar/MenuItems";
 
 import images from "@/assets/assets";
 import NavbarButtonGroup from "./NavbarButtonGroup";
+import { usePathname } from "next/navigation";
 
 const Navbar = () => {
+    const pathName = usePathname();
     const { theme, setTheme } = useTheme();
     const [active, setactive] = useState("Explore NFTs");
     const router = useRouter();
     const [isOpen, setisOpen] = useState(false);
+    const checkActive = (
+        active: string,
+        setActive: React.Dispatch<React.SetStateAction<string>>
+    ) => {
+        switch (pathName) {
+            case "/":
+                if (active !== "Explore NFTs") setActive("Explore NFTs");
+                break;
+            case "/listed-nfts":
+                if (active !== "Listed NFts") setActive("Listed NFts");
+                break;
+            case "/my-nfts":
+                if (active !== "My NFTs") setActive("My NFTs");
+                break;
+            case "/create-nft":
+                setActive("");
+                break;
+            default:
+                setActive("");
+                break;
+        }
+        console.log("asdas");
+    };
+    useEffect(() => {
+        checkActive(active, setactive);
+    }, [pathName]);
+    useEffect(() => {
+        setTheme("dark");
+    }, []);
     return (
         <nav className="flexBetween w-full fixed z-10 p-4 flex-row border-b dark:bg-nft-dark bg-white dark:border-nft-black-1 border-nft-gray-1">
             <div className="flex flex-1 flex-row justify-start">
-                <Link href={"/"} className="flexCenter cursor-pointer">
-                    <Image
-                        src={images.logo02}
-                        alt="Logo"
-                        className="object-contain"
-                        width={32}
-                        height={32}
-                    />
-                    <p className="dark:text-white text-nft-black-1font-semibold text-lg ml-1 md:hidden">
-                        CryptoKet
-                    </p>
+                <Link href={"/"}>
+                    <div
+                        className="flexCenter cursor-pointer"
+                        onClick={() => {
+                            setactive("Explore NFTs");
+                            setisOpen(false);
+                        }}
+                    >
+                        <Image
+                            src={images.logo02}
+                            alt="Logo"
+                            className="object-contain"
+                            width={32}
+                            height={32}
+                        />
+                        <p className="dark:text-white text-nft-black-1font-semibold text-lg ml-1 md:hidden">
+                            CryptoKet
+                        </p>
+                    </div>
                 </Link>
             </div>
             <div className="flex flex-initial flex-row justify-end">
@@ -70,7 +109,7 @@ const Navbar = () => {
                         height={20}
                         onClick={() => setisOpen(false)}
                         className={`object-contain cursor-pointer ${
-                            theme === "light" ? "invert" : ""
+                            theme === "light" ? "filter invert" : ""
                         }`}
                     />
                 ) : (
@@ -86,7 +125,7 @@ const Navbar = () => {
                     />
                 )}
                 {isOpen && (
-                    <div className="fixed inset-0 top-65 dark:bg-nft-dark bg-white z-10 nav-height flex justify-between flex-col">
+                    <div className="fixed inset-0 top-65 dark:bg-nft-dark bg-white z-50 nav-height flex justify-between flex-col">
                         <div className="flex-1 p-4">
                             <MenuItems
                                 active={active}
@@ -101,6 +140,7 @@ const Navbar = () => {
                             <NavbarButtonGroup
                                 setActive={setactive}
                                 router={router}
+                                setIsOpen={setisOpen}
                             />
                         </div>
                     </div>

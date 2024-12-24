@@ -5,9 +5,14 @@ import { NFTContext } from "@/context/NFTContext";
 interface NavbarButtonGroupProps {
     setActive?: React.Dispatch<React.SetStateAction<string>>;
     router?: ReturnType<typeof useRouter>;
+    setIsOpen?: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const NavbarButtonGroup = ({ setActive, router }: NavbarButtonGroupProps) => {
+const NavbarButtonGroup = ({
+    setActive,
+    router,
+    setIsOpen,
+}: NavbarButtonGroupProps) => {
     const { connectWallet, currentAccount } = useContext(NFTContext);
     const hasConnected = true;
 
@@ -18,8 +23,11 @@ const NavbarButtonGroup = ({ setActive, router }: NavbarButtonGroupProps) => {
             handleClick={() => {
                 if (setActive) {
                     setActive("");
-                    if (router) {
-                        router.push("/create-nft");
+                    if (setIsOpen) {
+                        setIsOpen(false);
+                        if (router) {
+                            router.push("/create-nft");
+                        }
                     }
                 }
             }}

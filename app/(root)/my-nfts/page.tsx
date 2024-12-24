@@ -14,7 +14,7 @@ const MyNFTs = () => {
     const [activeSelect, setActiveSelect] = useState("Recently Added");
     const [nfts, setNfts] = useState<NFTItem[]>([]);
     const [nftsCopy, setNftsCopy] = useState<NFTItem[]>([]);
-    const [isLoading, setIsLoading] = useState(false);
+    const [isLoading, setIsLoading] = useState(true);
     const { fetchMyNFTsorListedNFTs, currentAccount } = useContext(NFTContext);
     useEffect(() => {
         const fetchData = async () => {
@@ -26,13 +26,6 @@ const MyNFTs = () => {
         fetchData();
     }, []);
 
-    if (isLoading) {
-        return (
-            <div className="flex-start min-h-screen">
-                <Loader />
-            </div>
-        );
-    }
     const onHandleSearch = (value: string) => {
         const filteredNfts = nfts.filter(({ name }) =>
             name.toLowerCase().includes(value.toLowerCase())
@@ -80,15 +73,25 @@ const MyNFTs = () => {
                 break;
         }
     }, [activeSelect]);
+    if (isLoading) {
+        return (
+            <div className="flex-start min-h-screen">
+                <Loader />
+            </div>
+        );
+    }
     return (
         <div className="w-full flex justify-start items-center flex-col min-h-screen">
-            <div className="w-full flexCenter flex-col">
+            <div className="w-full flexCenter flex-col relative">
+                {/* Banner */}
                 <Banner
                     text="Your Nifty NFTS"
                     childStyles="text-center mb-4"
                     parentStyles="h-80 justify-center"
                 />
-                <div className="flexCenter flex-col -mt-20 z-20">
+
+                {/* Image Section */}
+                <div className="flexCenter flex-col relative -mt-20 z-5">
                     <div className="flexCenter w-40 h-40 sm:w-36 sm:h-36 p-1 bg-nft-black-2 rounded-full">
                         <Image
                             src={images.creator1}
