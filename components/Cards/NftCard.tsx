@@ -8,7 +8,7 @@ import { NFTContext } from "@/context/NFTContext";
 import { shortenAddress } from "@/utils/string";
 interface NftCardProps {
     nft: {
-        tokenId: number;
+        tokenId: string;
         name: string;
         seller: string;
         owner: string;

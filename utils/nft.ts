@@ -10,6 +10,7 @@ import Web3Modal from "web3modal";
 import { marketAddress, marketAddressAbi } from "@/context/constants";
 import { ethers } from "hardhat";
 import axios from "axios";
+import { NFTItem } from "@/context/NFTContext";
 
 export const createSale = async (
     url: string,
@@ -121,4 +122,20 @@ export const fetchMyNFTsorListedNFTs = async (type: string) => {
         )
     );
     return items;
+};
+
+export const buyNFT = async (nft: NFTItem) => {
+    const web3Modal = new Web3Modal();
+    const connection = await web3Modal.connect();
+
+    const provider = new BrowserProvider(connection);
+
+    const signer = await provider.getSigner();
+
+    const contract = await fetchContract(signer);
+    const price = parseUnits(nft.price.toString(), "ether");
+    const transaction = await contract.createMarketSale(nft.tokenId, {
+        value: price,
+    });
+    await transaction.wait();
 };

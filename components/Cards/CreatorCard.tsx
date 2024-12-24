@@ -31,7 +31,7 @@ const CreatorCard = ({
                         src={creatorImg}
                         alt={creatorName}
                         fill
-                        className="object-cover"
+                        className="object-cover rounded-full"
                     />
                     <div className="absolute w-4 h-4 minlg:w-7 minlg:h-7 bottom-2 -right-0">
                         <Image

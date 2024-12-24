@@ -7,10 +7,15 @@ import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.share
 
 // Directly import create from Web3Storage client
 import { create } from "@web3-storage/w3up-client";
-import { createSale, fetchNFTs, fetchMyNFTsorListedNFTs } from "@/utils/nft";
+import {
+    createSale,
+    fetchNFTs,
+    fetchMyNFTsorListedNFTs,
+    buyNFT,
+} from "@/utils/nft";
 export interface NFTItem {
     price: string; // Assuming `parseUnits` returns a string
-    tokenId: number;
+    tokenId: string;
     seller: string;
     owner: string;
     image: string;
@@ -30,6 +35,7 @@ interface NFTContextType {
     ) => Promise<void>;
     fetchNFTs: () => Promise<NFTItem[]>; // Updated to return Promise<NFTItem[]>
     fetchMyNFTsorListedNFTs: (type: string) => Promise<NFTItem[]>;
+    buyNFT: (nft: NFTItem) => Promise<void>;
 }
 
 export const NFTContext = React.createContext<NFTContextType>({
@@ -40,6 +46,7 @@ export const NFTContext = React.createContext<NFTContextType>({
     createNFT: async () => {},
     fetchNFTs: async () => [], // Default to an empty array for NFTs
     fetchMyNFTsorListedNFTs: async (type: string) => [],
+    buyNFT: async (nft: NFTItem) => {},
 });
 
 interface NFTProviderProps {
@@ -151,6 +158,7 @@ export const NFTProvider = ({ children }: NFTProviderProps) => {
                 createNFT,
                 fetchNFTs,
                 fetchMyNFTsorListedNFTs,
+                buyNFT,
             }}
         >
             {children}
