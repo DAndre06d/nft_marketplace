@@ -9,10 +9,13 @@ import { NFTContext } from "@/context/NFTContext";
 import { NFTItem } from "@/context/NFTContext";
 import { getCreators } from "@/utils/getTopCreators";
 import { shortenAddress } from "@/utils/string";
+import SearchBar from "@/components/Search/SearchBar";
 
 export default function Home() {
     const [hideButtons, sethideButtons] = useState(false);
     const [nfts, setnfts] = useState<NFTItem[]>([]);
+    const [nftsCopy, setNftsCopy] = useState<NFTItem[]>([]);
+    const [activeSelect, setActiveSelect] = useState("Recently Added");
     const { fetchNFTs } = useContext(NFTContext);
     const parentRef = useRef<HTMLDivElement>(null);
     const scrollRef = useRef<HTMLDivElement>(null);
@@ -37,6 +40,21 @@ export default function Home() {
             sethideButtons(true);
         }
     };
+    const onHandleSearch = (value: string) => {
+        const filteredNfts = nfts.filter(({ name }) =>
+            name.toLowerCase().includes(value.toLowerCase())
+        );
+        if (filteredNfts.length) {
+            setnfts(filteredNfts);
+        } else {
+            setnfts(nftsCopy);
+        }
+    };
+    const onClearSearch = () => {
+        if (nfts.length && nftsCopy.length) {
+            setnfts(nftsCopy);
+        }
+    };
     useEffect(() => {
         // Delay calling isScrollable until refs are set
         const handleResize = () => {
@@ -49,16 +67,49 @@ export default function Home() {
             window.removeEventListener("resize", handleResize);
         };
     }, []);
+    useEffect(() => {
+        const sortedNFTs = [...nfts];
+        switch (activeSelect) {
+            case "Price (Low to High)":
+                setnfts(
+                    sortedNFTs.sort(
+                        (a, b) => parseInt(a.price) - parseInt(b.price)
+                    )
+                );
+                break;
+            case "Price (High to Low)":
+                setnfts(
+                    sortedNFTs.sort(
+                        (a, b) => parseInt(b.price) - parseInt(a.price)
+                    )
+                );
+                break;
+            case "Recently Added":
+                setnfts(
+                    sortedNFTs.sort((a, b) => {
+                        return (
+                            parseInt(b.tokenId, 10) - parseInt(a.tokenId, 10)
+                        );
+                    })
+                );
+                break;
+
+            default:
+                setnfts(nfts);
+                break;
+        }
+    }, [activeSelect]);
 
     useEffect(() => {
         const fetchData = async () => {
             const items = await fetchNFTs();
             // console.log(items);
             setnfts(items);
+            setNftsCopy(items);
         };
         fetchData();
     }, []);
-    const topCreators = getCreators(nfts);
+    const topCreators = getCreators(nftsCopy);
     return (
         <div className="flex justify-center sm:px-4 p-12">
             <div className="w-full minmd:w-4/5">
@@ -136,7 +187,14 @@ export default function Home() {
                         <h1 className="font-poppins dark:text-white text-nft-black-1 text-2xl minlg:text-4xl text-semibold sm:mb-4 flex-1">
                             Hot Bids
                         </h1>
-                        <div>Searchbar</div>
+                        <div className="flex-1 sm:w-full flex flex-row sm:flex-col">
+                            <SearchBar
+                                activeSelect={activeSelect}
+                                setActiveSelect={setActiveSelect}
+                                handleSearch={onHandleSearch}
+                                clearSearch={onClearSearch}
+                            />
+                        </div>
                     </div>
                     <div className="mt-3 w-full flex flex-wrap justify-start md:justify-center">
                         {nfts.map((nft) => (

@@ -2,9 +2,9 @@ import React, { useContext } from "react";
 import { NFTContext } from "@/context/NFTContext";
 interface InputProps {
     inputType: string;
-    title: string;
+    title?: string;
     placeholder: string;
-    handleClick: (
+    handleClick?: (
         e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
     ) => void;
 }
