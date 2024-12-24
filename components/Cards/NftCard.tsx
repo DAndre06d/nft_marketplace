@@ -16,9 +16,10 @@ interface NftCardProps {
         image: string;
         price: string;
     };
+    onProfilePage?: boolean;
 }
 
-const NftCard = ({ nft }: NftCardProps) => {
+const NftCard = ({ nft, onProfilePage }: NftCardProps) => {
     const { nftCurrency } = useContext(NFTContext);
     return (
         <Link
@@ -51,7 +52,9 @@ const NftCard = ({ nft }: NftCardProps) => {
                     </div>
                     <p className="font-poppins dark:text-white text-nft-black-1 font-semibold text-xs minlg:text-lg">
                         {nft.seller.length > 10
-                            ? shortenAddress(nft.seller)
+                            ? shortenAddress(
+                                  onProfilePage ? nft.owner : nft.seller
+                              )
                             : nft.seller}
                     </p>
                 </div>
