@@ -7,6 +7,8 @@ import images from "@/assets/assets";
 import { useTheme } from "next-themes";
 import { NFTContext } from "@/context/NFTContext";
 import { NFTItem } from "@/context/NFTContext";
+import { getCreators } from "@/utils/getTopCreators";
+import { shortenAddress } from "@/utils/string";
 
 export default function Home() {
     const [hideButtons, sethideButtons] = useState(false);
@@ -51,11 +53,12 @@ export default function Home() {
     useEffect(() => {
         const fetchData = async () => {
             const items = await fetchNFTs();
-            console.log(items);
+            // console.log(items);
             setnfts(items);
         };
         fetchData();
     }, []);
+    const topCreators = getCreators(nfts);
     return (
         <div className="flex justify-center sm:px-4 p-12">
             <div className="w-full minmd:w-4/5">
@@ -76,17 +79,19 @@ export default function Home() {
                             className="flex flex-row w-max overflow-x-scroll no-scrollbar select-none"
                             ref={scrollRef}
                         >
-                            {[6, 7, 8, 9, 10].map((i) => (
+                            {topCreators.map((creator, i) => (
                                 <CreatorCard
-                                    key={`creator-${i}`}
-                                    rank={i}
+                                    key={creator.seller}
+                                    rank={i + 1}
                                     creatorImg={
                                         images[
-                                            `creator${i}` as keyof typeof images
+                                            `creator${
+                                                i + 1
+                                            }` as keyof typeof images
                                         ] || ""
                                     }
-                                    creatorName={`0x${112312}...${123123}`}
-                                    creatorEths={10 - i * 0.5}
+                                    creatorName={shortenAddress(creator.seller)}
+                                    creatorEths={creator.sum}
                                 />
                             ))}
                             {!hideButtons && (
