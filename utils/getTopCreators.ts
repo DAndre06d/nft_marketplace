@@ -14,5 +14,5 @@ export const getCreators = (nfts: NFTItem[]) => {
         sum,
     })).sort((a, b) => b.sum - a.sum);
 
-    return sortedCreators;
+    return sortedCreators.slice(0, 10);
 };
