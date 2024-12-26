@@ -4,7 +4,7 @@ import dotenv from "dotenv";
 
 dotenv.config();
 
-const polygonMainnetUrl = `https://polygon-mainnet.g.alchemy.com/v2/${process.env.APIKEY_POLYGON}`;
+const polygonAmoyUrl = `https://polygon-amoy.g.alchemy.com/v2/${process.env.APIKEY_POLYGON}`;
 const config: HardhatUserConfig = {
     solidity: "0.8.28",
     networks: {
@@ -15,9 +15,10 @@ const config: HardhatUserConfig = {
             url: "http://localhost:8545",
             chainId: 1337,
         },
-        matic: {
-            url: polygonMainnetUrl,
+        polygonAmoy: {
+            url: polygonAmoyUrl,
             accounts: [process.env.PRIVATE_WALLET_ADDR!],
+            chainId: 80002,
         },
     },
 };
