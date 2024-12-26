@@ -25,9 +25,9 @@ const NavbarButtonGroup = ({
                     setActive("");
                     if (setIsOpen) {
                         setIsOpen(false);
-                        if (router) {
-                            router.push("/create-nft");
-                        }
+                    }
+                    if (router) {
+                        router.push("/create-nft");
                     }
                 }
             }}

@@ -78,6 +78,7 @@ const headers = {
 };
 export const NFTProvider = ({ children }: NFTProviderProps) => {
     const [currentAccount, setcurrentAccount] = useState("");
+    const [isLoadingNFT, setisLoadingNFT] = useState(false);
 
     const checkIfWallerConnected = async () => {
         if (!window.ethereum)
@@ -108,7 +109,7 @@ export const NFTProvider = ({ children }: NFTProviderProps) => {
         checkIfWallerConnected();
     }, []);
 
-    const nftCurrency = "ETH";
+    const nftCurrency = "MATIC";
 
     const uploadToIPFS = async (file: File) => {
         try {
